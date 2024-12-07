@@ -6,37 +6,74 @@
     <title>뉴스 크롤링 사이트</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#317EFB">
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
         }
+
+        /* 버튼 영역 스크롤 커스터마이징 */
+        #category-buttons::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        #category-buttons::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+
+        #category-buttons::-webkit-scrollbar-track {
+            background: #f3f4f6;
+        }
+
+        #category-buttons {
+            overflow-x: auto; /* 가로 스크롤 가능 */
+            white-space: nowrap; /* 버튼들을 한 줄로 정렬 */
+            -ms-overflow-style: none; /* Internet Explorer에서 스크롤바 숨김 */
+            scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+        }
+        
+        #category-buttons::-webkit-scrollbar {
+            display: none; /* Chrome, Safari에서 스크롤바 숨김 */
+        }
     </style>
 </head>
 <body class="bg-gray-100 p-6">
-    <div class="max-w-lg mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="p-6">
-            <h1 class="text-xl font-bold mb-4">뉴스 크롤링 사이트</h1>
-            <div class="space-y-4">
-                <button 
-                    class="w-full bg-gray-200 p-4 rounded-lg hover:bg-gray-300" 
-                    onclick="fetchNews()">오늘의 핫 뉴스</button>
-                <button 
-                    class="w-full bg-gray-200 p-4 rounded-lg hover:bg-gray-300" 
-                    onclick="fetchNews('정치')">정치 뉴스</button>
-                <button 
-                    class="w-full bg-gray-200 p-4 rounded-lg hover:bg-gray-300" 
-                    onclick="fetchNews('경제')">경제 뉴스</button>
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+        <!-- 상단 헤더 -->
+        <header class="bg-white shadow-md p-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">뉴스 크롤링 사이트</h1>
+        </header>
+
+        <!-- 콘텐츠 -->
+        <div class="flex flex-col md:flex-row">
+            <!-- 왼쪽: 스크롤 가능한 카테고리 버튼 영역 -->
+            <div class="w-full md:w-1/3 p-6 border-b md:border-b-0 md:border-r">
+                <h2 class="text-lg font-bold mb-4">뉴스 카테고리</h2>
+                <div id="category-buttons" class="flex gap-4 overflow-x-auto md:flex-col md:gap-4">
+                    <button class="flex-shrink-0 bg-gray-200 p-4 w-25 text-center text-sm font-semibold hover:bg-gray-300 rounded-lg" data-category="정치">정치</button>
+                    <button class="flex-shrink-0 bg-gray-200 p-4 w-25 text-center text-sm font-semibold hover:bg-gray-300 rounded-lg" data-category="경제">경제</button>
+                    <button class="flex-shrink-0 bg-gray-200 p-4 w-25 text-center text-sm font-semibold hover:bg-gray-300 rounded-lg" data-category="사회">사회</button>
+                    <button class="flex-shrink-0 bg-gray-200 p-4 w-25 text-center text-sm font-semibold hover:bg-gray-300 rounded-lg" data-category="생활/문화">생활/문화</button>
+                    <button class="flex-shrink-0 bg-gray-200 p-4 w-25 text-center text-sm font-semibold hover:bg-gray-300 rounded-lg" data-category="세계">세계</button>
+                    <button class="flex-shrink-0 bg-gray-200 p-4 w-25 text-center text-sm font-semibold hover:bg-gray-300 rounded-lg" data-category="IT/과학">IT/과학</button>
+                </div>
             </div>
-        </div>
-        <div class="p-6 border-t">
-            <ol id="news-list" class="list-decimal pl-5 space-y-4">
-                <!-- Firestore에서 가져온 뉴스가 여기에 표시됩니다 -->
-            </ol>
+
+            <!-- 오른쪽: 뉴스 리스트 영역 -->
+            <div class="w-full md:w-2/3 p-6">
+                <h2 id="news-category-title" class="text-lg font-bold mb-4">뉴스 리스트</h2>
+                <ol id="news-list" class="list-decimal pl-5 space-y-4">
+                    <!-- Firestore에서 가져온 뉴스가 여기에 표시됩니다 -->
+                </ol>
+            </div>
         </div>
     </div>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="app.js"></script>
-
 </body>
 </html>
